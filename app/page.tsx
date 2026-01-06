@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 const demos = [
+  // Beginner Level
   {
     href: "/race-condition",
     title: "Race Conditions",
@@ -23,60 +24,8 @@ const demos = [
     icon: AlertTriangle,
     color: "red",
     tags: ["Lost Updates", "Thread Interleaving"],
-  },
-  {
-    href: "/lock-and-cas",
-    title: "Locks & CAS",
-    description:
-      "Explore how Mutex and Compare-And-Swap solve race conditions with different trade-offs.",
-    icon: Lock,
-    color: "amber",
-    tags: ["Mutual Exclusion", "Atomic Operations"],
-  },
-  {
-    href: "/deadlock",
-    title: "Deadlock",
-    description:
-      "Visualize two threads lock each other in an eternal embrace of death. See the circular wait condition.",
-    icon: Skull,
-    color: "rose",
-    tags: ["Circular Wait", "Lock Ordering"],
-  },
-  {
-    href: "/producer-consumer",
-    title: "Producer-Consumer",
-    description:
-      "Watch producers fill a bounded buffer while consumers drain it. See blocking in action.",
-    icon: Package,
-    color: "orange",
-    tags: ["Bounded Buffer", "Blocking Queue"],
-  },
-  {
-    href: "/thread-pool",
-    title: "Thread Pool",
-    description:
-      "See how a fixed pool of workers processes a queue of tasks efficiently without thread explosion.",
-    icon: Users,
-    color: "cyan",
-    tags: ["Worker Pool", "Task Queue"],
-  },
-  {
-    href: "/reader-writer",
-    title: "Reader-Writer Lock",
-    description:
-      "Multiple readers OR one exclusive writer - never both. Perfect for read-heavy workloads.",
-    icon: BookOpen,
-    color: "indigo",
-    tags: ["Shared Access", "Exclusive Write"],
-  },
-  {
-    href: "/semaphore",
-    title: "Semaphore",
-    description:
-      "Control access to a limited pool of resources. The tollbooth analogy for rate limiting.",
-    icon: TrafficCone,
-    color: "yellow",
-    tags: ["Rate Limiting", "Resource Pool"],
+    level: "Beginner",
+    order: 1,
   },
   {
     href: "/async-vs-threads",
@@ -86,6 +35,76 @@ const demos = [
     icon: Zap,
     color: "purple",
     tags: ["I/O vs CPU", "Concurrency Models"],
+    level: "Beginner",
+    order: 2,
+  },
+  {
+    href: "/lock-and-cas",
+    title: "Locks & CAS",
+    description:
+      "Explore how Mutex and Compare-And-Swap solve race conditions with different trade-offs.",
+    icon: Lock,
+    color: "amber",
+    tags: ["Mutual Exclusion", "Atomic Operations"],
+    level: "Beginner",
+    order: 3,
+  },
+  // Intermediate Level
+  {
+    href: "/deadlock",
+    title: "Deadlock",
+    description:
+      "Visualize two threads lock each other in an eternal embrace of death. See the circular wait condition.",
+    icon: Skull,
+    color: "rose",
+    tags: ["Circular Wait", "Lock Ordering"],
+    level: "Intermediate",
+    order: 4,
+  },
+  {
+    href: "/producer-consumer",
+    title: "Producer-Consumer",
+    description:
+      "Watch producers fill a bounded buffer while consumers drain it. See blocking in action.",
+    icon: Package,
+    color: "orange",
+    tags: ["Bounded Buffer", "Blocking Queue"],
+    level: "Intermediate",
+    order: 5,
+  },
+  {
+    href: "/semaphore",
+    title: "Semaphore",
+    description:
+      "Control access to a limited pool of resources. The tollbooth analogy for rate limiting.",
+    icon: TrafficCone,
+    color: "yellow",
+    tags: ["Rate Limiting", "Resource Pool"],
+    level: "Intermediate",
+    order: 6,
+  },
+  {
+    href: "/thread-pool",
+    title: "Thread Pool",
+    description:
+      "See how a fixed pool of workers processes a queue of tasks efficiently without thread explosion.",
+    icon: Users,
+    color: "cyan",
+    tags: ["Worker Pool", "Task Queue"],
+    level: "Intermediate",
+    order: 7,
+  },
+  // Advanced Level
+  {
+    href: "/reader-writer",
+    title: "Reader-Writer Lock",
+    description:
+      "Multiple readers OR one exclusive writer - never both. Perfect for read-heavy workloads.",
+    icon: BookOpen,
+    color: "indigo",
+    tags: ["Shared Access", "Exclusive Write"],
+    level: "Advanced",
+    order: 8,
   },
   {
     href: "/memory-ordering",
@@ -95,6 +114,8 @@ const demos = [
     icon: Eye,
     color: "pink",
     tags: ["Cache Coherence", "Visibility"],
+    level: "Advanced",
+    order: 9,
   },
   {
     href: "/starvation",
@@ -104,8 +125,29 @@ const demos = [
     icon: AlertCircle,
     color: "red",
     tags: ["Priority Inversion", "Fair Scheduling"],
+    level: "Advanced",
+    order: 10,
   },
 ];
+
+const levelConfig: Record<string, { bg: string; text: string; label: string }> =
+  {
+    Beginner: {
+      bg: "bg-green-500/20",
+      text: "text-green-400",
+      label: "🌱 Beginner",
+    },
+    Intermediate: {
+      bg: "bg-yellow-500/20",
+      text: "text-yellow-400",
+      label: "🌿 Intermediate",
+    },
+    Advanced: {
+      bg: "bg-red-500/20",
+      text: "text-red-400",
+      label: "🔥 Advanced",
+    },
+  };
 
 const colorClasses: Record<
   string,
@@ -208,6 +250,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {demos.map((demo) => {
             const colors = colorClasses[demo.color];
+            const level = levelConfig[demo.level];
             const Icon = demo.icon;
             return (
               <Link key={demo.href} href={demo.href} className="group">
@@ -215,10 +258,22 @@ export default function Home() {
                   className={`h-full bg-gradient-to-br ${colors.bg} to-slate-800 rounded-2xl border ${colors.border} p-6 transition-all duration-300 ${colors.hover} hover:shadow-2xl hover:-translate-y-1`}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`p-3 bg-slate-800/80 rounded-xl`}>
-                      <Icon className={`w-6 h-6 ${colors.icon}`} />
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 bg-slate-800/80 rounded-xl`}>
+                        <Icon className={`w-6 h-6 ${colors.icon}`} />
+                      </div>
+                      <div
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${level.bg} ${level.text}`}
+                      >
+                        {level.label}
+                      </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-500 text-xs font-mono">
+                        #{demo.order}
+                      </span>
+                      <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                    </div>
                   </div>
 
                   <h2 className="text-xl font-bold text-white mb-2">
@@ -250,32 +305,81 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-white mb-6 text-center">
             📚 Suggested Learning Path
           </h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              "Race Conditions",
-              "→",
-              "Locks & CAS",
-              "→",
-              "Deadlock",
-              "→",
-              "Producer-Consumer",
-              "→",
-              "Thread Pool",
-            ].map((item, i) => (
-              <div
-                key={i}
-                className={
-                  item === "→"
-                    ? "text-slate-500 text-2xl"
-                    : "px-4 py-2 bg-slate-700 rounded-lg text-white text-sm"
-                }
-              >
-                {item}
+
+          <div className="space-y-6">
+            {/* Beginner */}
+            <div className="flex items-center gap-4">
+              <div className="w-28 flex-shrink-0">
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-400">
+                  🌱 Beginner
+                </span>
               </div>
-            ))}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  1. Race Conditions
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  2. Async vs Threads
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  3. Locks & CAS
+                </span>
+              </div>
+            </div>
+
+            {/* Intermediate */}
+            <div className="flex items-center gap-4">
+              <div className="w-28 flex-shrink-0">
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-yellow-500/20 text-yellow-400">
+                  🌿 Intermediate
+                </span>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  4. Deadlock
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  5. Producer-Consumer
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  6. Semaphore
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  7. Thread Pool
+                </span>
+              </div>
+            </div>
+
+            {/* Advanced */}
+            <div className="flex items-center gap-4">
+              <div className="w-28 flex-shrink-0">
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-red-500/20 text-red-400">
+                  🔥 Advanced
+                </span>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  8. Reader-Writer
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  9. Memory Ordering
+                </span>
+                <span className="text-slate-500">→</span>
+                <span className="px-3 py-1 bg-slate-700 rounded-lg text-white text-sm">
+                  10. Starvation
+                </span>
+              </div>
+            </div>
           </div>
-          <p className="text-slate-400 text-center mt-4">
-            Start with the basics and build up to advanced patterns
+
+          <p className="text-slate-400 text-center mt-6">
+            Follow the numbered path from beginner to advanced concepts
           </p>
         </div>
 
