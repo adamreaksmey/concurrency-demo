@@ -76,7 +76,9 @@ With 4 cores: ~2.5x speedup
 
 Concurrency isn't free. It introduces subtle bugs that can be nightmarish to debug.
 
-> 🎮 **Try the interactive demo**: [Race Condition Visualizer](/race-condition) - Watch threads corrupt shared data in real-time!
+> 🎮 **Try the interactive demo**: [Race Condition Visualizer](https://concurrency-demo.vercel.app/race-condition) - Watch threads corrupt shared data in real-time!
+>
+> _[Explore more advanced demos →](https://concurrency-demo.vercel.app/)_
 
 ### The Bank Account Problem
 
@@ -133,11 +135,28 @@ A thread is a lightweight unit of execution. Each thread has:
 
 ### Shared vs Local Memory
 
-| Local (Safe)                 | Shared (Dangerous)        |
-| ---------------------------- | ------------------------- |
-| Function parameters          | Global variables          |
-| Local variables              | Object attributes         |
-| Each thread has its own copy | All threads see same data |
+<table>
+  <thead>
+    <tr>
+      <th>Local (Safe)</th>
+      <th>Shared (Dangerous)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Function parameters</td>
+      <td>Global variables</td>
+    </tr>
+    <tr>
+      <td>Local variables</td>
+      <td>Object attributes</td>
+    </tr>
+    <tr>
+      <td>Each thread has its own copy</td>
+      <td>All threads see same data</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Concurrency vs Parallelism
 
@@ -146,7 +165,9 @@ A thread is a lightweight unit of execution. Each thread has:
 
 ## Solution 1: Locks and Mutexes
 
-> 🎮 **Try the interactive demo**: [Locks & CAS Visualizer](/lock-and-cas)
+> 🎮 **Try the interactive demo**: [Locks & CAS Visualizer](https://concurrency-demo.vercel.app/lock-and-cas)
+>
+> _[Explore more advanced demos →](https://concurrency-demo.vercel.app/)_
 
 ### The Bathroom Analogy
 
@@ -198,12 +219,32 @@ let mut num = counter.lock().unwrap();
 
 ### Pros and Cons
 
-| ✅ Pros                | ❌ Cons                             |
-| ---------------------- | ----------------------------------- |
-| Simple mental model    | Performance bottleneck (contention) |
-| Guaranteed correctness | Deadlock potential                  |
-| Wide language support  | Priority inversion                  |
-|                        | Doesn't compose well                |
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Simple mental model</td>
+      <td>Performance bottleneck (contention)</td>
+    </tr>
+    <tr>
+      <td>Guaranteed correctness</td>
+      <td>Deadlock potential</td>
+    </tr>
+    <tr>
+      <td>Wide language support</td>
+      <td>Priority inversion</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Doesn't compose well</td>
+    </tr>
+  </tbody>
+</table>
 
 ### When to Use Locks
 
@@ -309,19 +350,56 @@ function incrementWithBackoff() {
 
 ### Progress Guarantees
 
-| Blocking (Locks)           | Lock-Free                    | Wait-Free                   |
-| -------------------------- | ---------------------------- | --------------------------- |
-| Threads can wait forever   | System makes progress        | Every thread makes progress |
-| One slow thread blocks all | Individual threads may retry | Bounded steps guaranteed    |
+<table>
+  <thead>
+    <tr>
+      <th>Blocking (Locks)</th>
+      <th>Lock-Free</th>
+      <th>Wait-Free</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Threads can wait forever</td>
+      <td>System makes progress</td>
+      <td>Every thread makes progress</td>
+    </tr>
+    <tr>
+      <td>One slow thread blocks all</td>
+      <td>Individual threads may retry</td>
+      <td>Bounded steps guaranteed</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Pros and Cons
 
-| ✅ Pros            | ❌ Cons                  |
-| ------------------ | ------------------------ |
-| No blocking        | Complex to implement     |
-| Better scalability | ABA problem (see below)  |
-| No deadlocks       | Memory ordering concerns |
-| Composable         | Starvation possible      |
+<table>
+  <thead>
+    <tr>
+      <th>✅ Pros</th>
+      <th>❌ Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No blocking</td>
+      <td>Complex to implement</td>
+    </tr>
+    <tr>
+      <td>Better scalability</td>
+      <td>ABA problem (see below)</td>
+    </tr>
+    <tr>
+      <td>No deadlocks</td>
+      <td>Memory ordering concerns</td>
+    </tr>
+    <tr>
+      <td>Composable</td>
+      <td>Starvation possible</td>
+    </tr>
+  </tbody>
+</table>
 
 ### When to Use Each
 
@@ -368,11 +446,32 @@ Atomic operations include implicit barriers:
 
 ### Ordering Spectrum
 
-| Ordering                        | Cost    | Use Case                          |
-| ------------------------------- | ------- | --------------------------------- |
-| SeqCst (Sequential Consistency) | Highest | Default, safest                   |
-| Acquire-Release                 | Medium  | Producer-consumer patterns        |
-| Relaxed                         | Lowest  | Just need atomicity, not ordering |
+<table>
+  <thead>
+    <tr>
+      <th>Ordering</th>
+      <th>Cost</th>
+      <th>Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SeqCst (Sequential Consistency)</td>
+      <td>Highest</td>
+      <td>Default, safest</td>
+    </tr>
+    <tr>
+      <td>Acquire-Release</td>
+      <td>Medium</td>
+      <td>Producer-consumer patterns</td>
+    </tr>
+    <tr>
+      <td>Relaxed</td>
+      <td>Lowest</td>
+      <td>Just need atomicity, not ordering</td>
+    </tr>
+  </tbody>
+</table>
 
 > 📖 **Further reading**: For deep dives on memory ordering, see [Herb Sutter's atomic<> weapons talks](https://herbsutter.com/2013/02/11/atomic-weapons-the-c-memory-model-and-modern-hardware/) or the [Rust Atomics book](https://marabos.nl/atomics/).
 
@@ -401,11 +500,28 @@ Most developers won't encounter this directly - use battle-tested lock-free libr
 
 ### Contention Levels
 
-| Contention | Winner                               |
-| ---------- | ------------------------------------ |
-| Low        | Atomics (10-100x faster)             |
-| Medium     | Atomics (smaller gap)                |
-| High       | Locks may win (CAS retries burn CPU) |
+<table>
+  <thead>
+    <tr>
+      <th>Contention</th>
+      <th>Winner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Low</td>
+      <td>Atomics (10-100x faster)</td>
+    </tr>
+    <tr>
+      <td>Medium</td>
+      <td>Atomics (smaller gap)</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>Locks may win (CAS retries burn CPU)</td>
+    </tr>
+  </tbody>
+</table>
 
 ### False Sharing
 
@@ -518,7 +634,28 @@ Concurrency is hard. Lock-free is harder. But with understanding of fundamentals
 - CAS loops need backoff strategies for production use
 - Use sanitizers and stress testing - manual review isn't enough
 
-> 🎮 **Explore the interactive demos:**
+---
+
+> 🚀 **Ready to go deeper?**
 >
-> - [Race Condition Visualizer](/race-condition)
-> - [Locks & CAS Comparison](/lock-and-cas)
+> This guide covers the fundamentals, but there's more to explore. Check out the full [Interactive Concurrency Playground](https://concurrency-demo.vercel.app/) for advanced topics like:
+>
+> - Deadlocks and how to prevent them
+> - Producer-consumer patterns
+> - Reader-writer locks
+> - Thread pools and work stealing
+> - Memory ordering deep dive
+> - Semaphores and condition variables
+> - Starvation scenarios
+> - Async vs threads comparison
+>
+> Each comes with visualizations to see the concepts in action.
+
+**Key takeaways:**
+
+- **Measure first** - concurrency is an optimization, not a default
+- Race conditions happen when non-atomic operations interleave
+- Locks provide simplicity and correctness at the cost of performance
+- Atomics provide speed but require careful reasoning
+- CAS loops need backoff strategies for production use
+- Use sanitizers and stress testing - manual review isn't enough
