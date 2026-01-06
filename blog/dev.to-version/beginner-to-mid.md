@@ -1,21 +1,21 @@
 # Concurrency Without the Pain: A Guide for Beginner & Mid-Level Developers
 
+Ever since I first encountered concurrency, I've been fascinated by it. If you've ever wondered why your program isn't fully utilizing that multi-core processor - or why adding more threads sometimes makes things worse - you're in the right place.
+
 ## Table of Contents
 
-1. [Why Concurrency Matters](#why-concurrency-matters)
-2. [When NOT to Use Concurrency](#when-not-to-use-concurrency)
-3. [The Problem: Race Conditions](#the-problem-race-conditions)
-4. [Understanding Threads & Shared Memory](#understanding-threads--shared-memory)
-5. [Solution 1: Locks and Mutexes](#solution-1-locks-and-mutexes)
-6. [Solution 2: Lock-Free Concurrency with Atomic Operations](#solution-2-lock-free-concurrency-with-atomic-operations)
-7. [Memory Ordering & Visibility](#memory-ordering--visibility)
-8. [Advanced: The ABA Problem](#advanced-the-aba-problem)
-9. [Performance Considerations](#performance-considerations)
-10. [Common Pitfalls & Debugging](#common-pitfalls--debugging)
+1. [🚀 Why Concurrency Matters](#why-concurrency-matters)
+2. [⛔ When NOT to Use Concurrency](#when-not-to-use-concurrency)
+3. [🏎️ The Problem: Race Conditions](#the-problem-race-conditions)
+4. [🧵 Understanding Threads & Shared Memory](#understanding-threads--shared-memory)
+5. [🔐 Solution 1: Locks and Mutexes](#solution-1-locks-and-mutexes)
+6. [⚛️ Solution 2: Lock-Free Concurrency with Atomic Operations](#solution-2-lock-free-concurrency-with-atomic-operations)
+7. [🧠 Memory Ordering & Visibility](#memory-ordering--visibility)
+8. [🔬 Advanced: The ABA Problem](#advanced-the-aba-problem)
+9. [📊 Performance Considerations](#performance-considerations)
+10. [🐛 Common Pitfalls & Debugging](#common-pitfalls--debugging)
 
 ---
-
-Ever since I first encountered concurrency, I've been fascinated by it. If you've ever wondered why your program isn't fully utilizing that multi-core processor - or why adding more threads sometimes makes things worse - you're in the right place.
 
 ## Why Concurrency Matters
 
