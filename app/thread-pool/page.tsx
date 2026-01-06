@@ -42,6 +42,7 @@ const COLORS = [
 ];
 
 export default function ThreadPoolDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [workerCount, setWorkerCount] = useState(4);
@@ -257,6 +258,73 @@ export default function ThreadPoolDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Thread Pools
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">👥</span> What is a Thread Pool?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A{" "}
+                  <span className="text-cyan-400 font-semibold">
+                    thread pool
+                  </span>{" "}
+                  is a collection of pre-created worker threads that process
+                  tasks from a queue. Instead of creating a new thread for each
+                  task (expensive!), you reuse a fixed pool.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ Benefits
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• No thread creation overhead per task</li>
+                    <li>• Bounded concurrency prevents resource exhaustion</li>
+                    <li>• Queue handles bursts of work</li>
+                    <li>• Automatic load balancing</li>
+                  </ul>
+                </div>
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                  <h4 className="text-yellow-400 font-semibold mb-2">
+                    ⚠️ Considerations
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Queue can grow unbounded (backpressure)</li>
+                    <li>• Pool size tuning is important</li>
+                    <li>• Long tasks can block others</li>
+                    <li>• Need graceful shutdown handling</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Add tasks and watch how workers pick them up from the queue.
+                  Notice how tasks wait when all workers are busy, demonstrating{" "}
+                  <span className="text-cyan-400">bounded parallelism</span>!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Controls */}

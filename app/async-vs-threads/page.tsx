@@ -32,6 +32,7 @@ const COLORS = [
 ];
 
 export default function AsyncVsThreadsDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [asyncTasks, setAsyncTasks] = useState<Task[]>([]);
   const [threadTasks, setThreadTasks] = useState<Task[]>([]);
   const [parallelTasks, setParallelTasks] = useState<Task[]>([]);
@@ -316,6 +317,95 @@ export default function AsyncVsThreadsDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Concurrency Models
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">⚡</span> Async, Threads &
+                  Parallelism: What&apos;s the Difference?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  These three concepts are often confused, but they solve
+                  different problems. Understanding when to use each is crucial
+                  for writing efficient, scalable applications.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    🔄 Async/Await
+                  </h4>
+                  <p className="text-slate-400 text-sm mb-2">
+                    Single thread that{" "}
+                    <span className="text-green-400">yields</span> during I/O
+                    operations.
+                  </p>
+                  <ul className="text-slate-400 text-xs space-y-1">
+                    <li>✓ Low overhead (no thread creation)</li>
+                    <li>✓ Scales to 10,000+ concurrent tasks</li>
+                    <li>✗ CPU-bound work blocks everything</li>
+                  </ul>
+                </div>
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                  <h4 className="text-blue-400 font-semibold mb-2">
+                    🧵 Threads
+                  </h4>
+                  <p className="text-slate-400 text-sm mb-2">
+                    OS-managed execution units with{" "}
+                    <span className="text-blue-400">preemptive</span>{" "}
+                    scheduling.
+                  </p>
+                  <ul className="text-slate-400 text-xs space-y-1">
+                    <li>✓ True preemption (OS decides)</li>
+                    <li>✓ Can utilize multiple cores</li>
+                    <li>✗ Context switch overhead</li>
+                  </ul>
+                </div>
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                  <h4 className="text-purple-400 font-semibold mb-2">
+                    🚀 Parallelism
+                  </h4>
+                  <p className="text-slate-400 text-sm mb-2">
+                    True <span className="text-purple-400">simultaneous</span>{" "}
+                    execution on multiple CPU cores.
+                  </p>
+                  <ul className="text-slate-400 text-xs space-y-1">
+                    <li>✓ Fastest for CPU-bound work</li>
+                    <li>✓ Linear speedup (ideally)</li>
+                    <li>✗ Limited by number of cores</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Notice how <span className="text-green-400">async</span> I/O
+                  tasks complete while other work continues,
+                  <span className="text-blue-400">threads</span> take turns on a
+                  single core, and
+                  <span className="text-purple-400">parallel</span> execution
+                  finishes fastest by running all tasks at once.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Results Banner */}

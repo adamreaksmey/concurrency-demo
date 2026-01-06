@@ -32,6 +32,7 @@ const COLORS = [
 ];
 
 export default function SemaphoreDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   //   const [permits, setPermits] = useState(3);
@@ -245,6 +246,79 @@ export default function SemaphoreDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Semaphores
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🚧</span> What is a Semaphore?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A{" "}
+                  <span className="text-yellow-400 font-semibold">
+                    semaphore
+                  </span>{" "}
+                  is a counter that controls access to a limited pool of
+                  resources. Think of it like a parking lot with N spaces - when
+                  all spaces are taken, new cars must wait.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ Use Cases
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Connection pool limits</li>
+                    <li>• API rate limiting</li>
+                    <li>• Bounded parallelism</li>
+                    <li>• Resource quotas</li>
+                  </ul>
+                </div>
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                  <h4 className="text-purple-400 font-semibold mb-2">
+                    ⚙️ Operations
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>
+                      • <code className="text-green-400">acquire()</code>:
+                      Decrement, block if 0
+                    </li>
+                    <li>
+                      • <code className="text-blue-400">release()</code>:
+                      Increment, wake waiters
+                    </li>
+                    <li>• Counter can be &gt; 1 (unlike mutex)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  See how only{" "}
+                  <span className="text-yellow-400">N permits</span> can be held
+                  at once. When all are taken, new requests wait in the queue
+                  until a permit is released!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Controls */}

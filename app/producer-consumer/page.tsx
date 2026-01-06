@@ -39,6 +39,7 @@ const COLORS = [
 ];
 
 export default function ProducerConsumerDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [queue, setQueue] = useState<Item[]>([]);
@@ -350,6 +351,81 @@ export default function ProducerConsumerDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Producer-Consumer
+              Pattern
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">📦</span> What is the
+                  Producer-Consumer Pattern?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A classic concurrency pattern where one or more{" "}
+                  <span className="text-green-400 font-semibold">
+                    producers
+                  </span>{" "}
+                  create items and place them in a shared{" "}
+                  <span className="text-purple-400 font-semibold">
+                    bounded buffer
+                  </span>
+                  , while{" "}
+                  <span className="text-blue-400 font-semibold">consumers</span>{" "}
+                  remove and process them. The buffer acts as a decoupling
+                  mechanism.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ Benefits
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Decouples production from consumption</li>
+                    <li>• Handles speed mismatches gracefully</li>
+                    <li>• Bounded buffer prevents memory overflow</li>
+                    <li>• Enables parallel processing pipelines</li>
+                  </ul>
+                </div>
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                  <h4 className="text-yellow-400 font-semibold mb-2">
+                    ⚠️ Blocking Behavior
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Full queue → producers block</li>
+                    <li>• Empty queue → consumers block</li>
+                    <li>• Prevents busy-waiting</li>
+                    <li>• Uses condition variables internally</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Watch producers turn{" "}
+                  <span className="text-yellow-400">yellow (blocked)</span> when
+                  the queue is full, and consumers block when empty. The bounded
+                  buffer maintains backpressure!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Stats */}

@@ -19,6 +19,7 @@ interface CacheState {
 }
 
 export default function MemoryOrderingDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [step, setStep] = useState(0);
   const [mainMemory, setMainMemory] = useState({ data: 0, ready: false });
@@ -237,6 +238,86 @@ export default function MemoryOrderingDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Memory Ordering
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🧠</span> Why CPUs Lie to You
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  Modern CPUs{" "}
+                  <span className="text-pink-400 font-semibold">
+                    reorder instructions
+                  </span>{" "}
+                  and use local caches for performance. This means one
+                  thread&apos;s writes may appear in a different order to
+                  another thread! Without proper synchronization, you can read
+                  &quot;stale&quot; data that hasn&apos;t been updated yet.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                  <h4 className="text-red-400 font-semibold mb-2">
+                    ⚠️ The Problem
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• CPU may reorder writes for optimization</li>
+                    <li>• Each core has its own L1/L2 cache</li>
+                    <li>• Writes sit in store buffers before memory</li>
+                    <li>
+                      • Result: Thread A&apos;s changes invisible to Thread B
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ The Solution
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>
+                      • <span className="text-blue-400">Release</span>: Flush
+                      writes before this point
+                    </li>
+                    <li>
+                      • <span className="text-green-400">Acquire</span>: Sync
+                      cache before reading
+                    </li>
+                    <li>
+                      • <span className="text-purple-400">SeqCst</span>: Full
+                      ordering (safest, slowest)
+                    </li>
+                    <li>• Atomics with proper memory ordering</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  In the <span className="text-red-400">broken scenario</span>,
+                  Core 2 sees ready=true but stale data=0 due to reordering. In
+                  the <span className="text-green-400">fixed scenario</span>,
+                  memory barriers ensure proper ordering.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Result Banner */}

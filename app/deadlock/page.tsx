@@ -32,6 +32,7 @@ interface LockState {
 }
 
 export default function DeadlockDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isDeadlocked, setIsDeadlocked] = useState(false);
   const [step, setStep] = useState(0);
@@ -265,6 +266,82 @@ export default function DeadlockDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Deadlocks
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">💀</span> What is a Deadlock?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A <span className="text-red-400 font-semibold">deadlock</span>{" "}
+                  occurs when two or more threads are blocked forever, each
+                  waiting for the other to release a resource. It&apos;s like
+                  two people meeting in a narrow hallway — each waits for the
+                  other to move first, and nobody goes anywhere!
+                </p>
+                <div className="mt-3 p-4 bg-slate-900/50 rounded-lg border-l-4 border-red-500">
+                  <p className="text-slate-400 text-sm">
+                    <strong className="text-red-400">
+                      Four Conditions for Deadlock:
+                    </strong>{" "}
+                    Mutual exclusion, hold and wait, no preemption, and circular
+                    wait. All four must be present for deadlock to occur.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                  <h4 className="text-red-400 font-semibold mb-2">
+                    ⚠️ The Dangers
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Application hangs completely</li>
+                    <li>• No error is thrown - silent failure</li>
+                    <li>• Hard to reproduce in testing</li>
+                    <li>• Can cascade to system-wide failures</li>
+                  </ul>
+                </div>
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ Prevention Strategies
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Always acquire locks in same order</li>
+                    <li>• Use lock timeouts (tryLock)</li>
+                    <li>• Deadlock detection algorithms</li>
+                    <li>• Lock-free programming</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Thread A acquires Lock 1 and needs Lock 2. Thread B acquires
+                  Lock 2 and needs Lock 1. Neither can proceed —{" "}
+                  <span className="text-red-400">
+                    classic circular wait deadlock!
+                  </span>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-3 gap-6">

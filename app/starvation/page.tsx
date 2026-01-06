@@ -24,6 +24,7 @@ interface Thread {
 }
 
 export default function StarvationDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [scenario, setScenario] = useState<"unfair" | "fair">("unfair");
@@ -268,6 +269,80 @@ export default function StarvationDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Starvation
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">😫</span> What is Starvation?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  <span className="text-red-400 font-semibold">Starvation</span>{" "}
+                  occurs when a thread is perpetually denied access to resources
+                  because higher-priority threads keep cutting in line. The
+                  thread is technically ready to run but never gets a chance.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                  <h4 className="text-red-400 font-semibold mb-2">⚠️ Causes</h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Unfair scheduling policies</li>
+                    <li>• Priority inversion</li>
+                    <li>• High-priority threads hogging resources</li>
+                    <li>• Writers always yielding to readers</li>
+                  </ul>
+                </div>
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    ✓ Solutions
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>
+                      • <span className="text-white">Aging</span>: Boost
+                      priority over time
+                    </li>
+                    <li>
+                      • <span className="text-white">Fair locks</span>: FIFO
+                      ordering
+                    </li>
+                    <li>
+                      • <span className="text-white">Priority inheritance</span>
+                    </li>
+                    <li>
+                      • <span className="text-white">Time slicing</span>: Limit
+                      hold time
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  In <span className="text-red-400">unfair mode</span>,
+                  low-priority threads starve and turn red. In{" "}
+                  <span className="text-green-400">fair mode</span>, wait-time
+                  boosts priority so everyone gets a turn!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Scenario Selector */}

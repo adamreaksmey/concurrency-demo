@@ -42,6 +42,8 @@ interface CASDemo {
 }
 
 const ConcurrencySolutions: React.FC = () => {
+  const [showExplanation, setShowExplanation] = useState(true);
+
   // Lock Demo State
   const [lockDemo, setLockDemo] = useState<LockDemo>({
     active: false,
@@ -252,15 +254,88 @@ const ConcurrencySolutions: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        {/* <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-            Solving Race Conditions
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent mb-4">
+            Locks & Compare-and-Swap (CAS)
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Explore how modern systems prevent data corruption when multiple
-            threads access shared resources simultaneously.
+            Two fundamental approaches to preventing race conditions in
+            concurrent systems.
           </p>
-        </div> */}
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Synchronization
+              Primitives
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🔐</span> Two Approaches to Thread
+                  Safety
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  When multiple threads need to modify shared data, we need
+                  mechanisms to prevent corruption. &nbsp;
+                  <span className="text-amber-400 font-semibold">
+                    Locks
+                  </span>{" "}
+                  use blocking—threads wait in line. &nbsp;
+                  <span className="text-purple-400 font-semibold">CAS</span> is
+                  non-blocking—threads retry until they succeed.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                  <h4 className="text-amber-400 font-semibold mb-2">
+                    🔒 Locks (Mutexes)
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>✓ Simple mental model</li>
+                    <li>✓ Works for complex critical sections</li>
+                    <li>✗ Can cause deadlock if misused</li>
+                    <li>✗ Blocking reduces throughput</li>
+                  </ul>
+                </div>
+                <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                  <h4 className="text-purple-400 font-semibold mb-2">
+                    ⚡ CAS (Lock-Free)
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>✓ No blocking—always making progress</li>
+                    <li>✓ Better performance under contention</li>
+                    <li>✗ Only works for simple operations</li>
+                    <li>✗ May retry many times (spinning)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  In the <span className="text-amber-400">Lock demo</span>,
+                  watch threads queue up and enter one at a time. In the{" "}
+                  <span className="text-purple-400">CAS demo</span>, see how
+                  threads can fail and retry when their expected value
+                  doesn&apos;t match.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* ---- Locks Section ---- */}
         <section className="mb-12 bg-gradient-to-br from-slate-800 to-slate-800/50 rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">

@@ -26,6 +26,8 @@ interface LogEntry {
 }
 
 const RaceConditionDemo: React.FC = () => {
+  const [showExplanation, setShowExplanation] = useState(true);
+
   // Unsafe counter state
   const [unsafeCounter, setUnsafeCounter] = useState(0);
   const [unsafeThreads, setUnsafeThreads] = useState<ThreadState[]>([
@@ -315,6 +317,130 @@ const RaceConditionDemo: React.FC = () => {
             aren&apos;t atomic. Compare unsafe vs atomic operations side by
             side.
           </p>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-8">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Race Conditions
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              {/* What is it? */}
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🏎️</span> What is a Race Condition?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A{" "}
+                  <span className="text-yellow-400 font-semibold">
+                    race condition
+                  </span>{" "}
+                  occurs when two or more threads access shared data
+                  simultaneously, and at least one of them modifies it. The
+                  final result depends on the unpredictable timing of thread
+                  execution — whoever &quot;wins the race&quot; determines the
+                  outcome. This unpredictability leads to bugs that are
+                  extremely hard to reproduce and debug.
+                </p>
+                <div className="mt-3 p-4 bg-slate-900/50 rounded-lg border-l-4 border-red-500">
+                  <p className="text-slate-400 text-sm">
+                    <strong className="text-red-400">Example:</strong> Imagine
+                    two bank tellers trying to update the same account balance
+                    at the same time. If the balance is $100 and both read it,
+                    then both try to add $50, the balance might end up as $150
+                    instead of $200!
+                  </p>
+                </div>
+              </div>
+
+              {/* Why it matters */}
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">💡</span> Why Should You Care?
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-slate-900/30 rounded-lg p-4">
+                    <h4 className="text-white font-semibold mb-2">
+                      Real-World Impact
+                    </h4>
+                    <ul className="text-slate-400 text-sm space-y-1">
+                      <li>• Lost database updates</li>
+                      <li>• Corrupted file contents</li>
+                      <li>• Incorrect financial calculations</li>
+                      <li>• Inventory management errors</li>
+                    </ul>
+                  </div>
+                  <div className="bg-slate-900/30 rounded-lg p-4">
+                    <h4 className="text-white font-semibold mb-2">
+                      Common Occurrences
+                    </h4>
+                    <ul className="text-slate-400 text-sm space-y-1">
+                      <li>• Multi-threaded web servers</li>
+                      <li>• Concurrent API requests</li>
+                      <li>• Shared cache updates</li>
+                      <li>• Counter/analytics tracking</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pros and Cons */}
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">⚖️</span> Understanding the
+                  Trade-offs
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                    <h4 className="text-red-400 font-semibold mb-2">
+                      Why Race Conditions Happen
+                    </h4>
+                    <ul className="text-slate-400 text-sm space-y-1">
+                      <li>• Non-atomic read-modify-write operations</li>
+                      <li>• Lack of synchronization primitives</li>
+                      <li>• Check-then-act patterns without locks</li>
+                      <li>• Premature optimization avoiding locks</li>
+                    </ul>
+                  </div>
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                    <h4 className="text-green-400 font-semibold mb-2">
+                      How to Prevent Them
+                    </h4>
+                    <ul className="text-slate-400 text-sm space-y-1">
+                      <li>• Use atomic operations (like in this demo)</li>
+                      <li>• Apply mutexes/locks for critical sections</li>
+                      <li>• Use thread-safe data structures</li>
+                      <li>• Design for immutability when possible</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Watch for in the demo */}
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch in This Demo
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Click &quot;Run Both Demos&quot; to see two scenarios
+                  side-by-side: the{" "}
+                  <span className="text-red-400">unsafe version</span> where all
+                  threads read the same value before any writes occur (causing
+                  lost updates), and the{" "}
+                  <span className="text-green-400">atomic version</span> where
+                  each operation is indivisible, ensuring every update is
+                  preserved.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Main Demo Grid */}

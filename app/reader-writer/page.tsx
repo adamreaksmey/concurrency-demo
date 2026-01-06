@@ -21,6 +21,7 @@ interface Thread {
 }
 
 export default function ReaderWriterDemo() {
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [activeReaders, setActiveReaders] = useState<Thread[]>([]);
@@ -254,6 +255,80 @@ export default function ReaderWriterDemo() {
               Reset
             </button>
           </div>
+        </div>
+
+        {/* Educational Explanation Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="mb-4 flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+          >
+            <span className="text-lg font-semibold">
+              {showExplanation ? "▼" : "▶"} Understanding Reader-Writer Locks
+            </span>
+          </button>
+
+          {showExplanation && (
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">📚</span> What is a Reader-Writer
+                  Lock?
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  A{" "}
+                  <span className="text-indigo-400 font-semibold">
+                    Reader-Writer Lock
+                  </span>{" "}
+                  allows either
+                  <span className="text-blue-400"> multiple readers</span> to
+                  access data simultaneously, OR
+                  <span className="text-orange-400">
+                    {" "}
+                    one exclusive writer
+                  </span>{" "}
+                  - but never both at the same time. This optimizes for
+                  read-heavy workloads.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                  <h4 className="text-blue-400 font-semibold mb-2">
+                    👓 Readers
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Many can read simultaneously</li>
+                    <li>• No data corruption risk (read-only)</li>
+                    <li>• Must wait if a writer is active</li>
+                  </ul>
+                </div>
+                <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                  <h4 className="text-orange-400 font-semibold mb-2">
+                    ✍️ Writers
+                  </h4>
+                  <ul className="text-slate-400 text-sm space-y-1">
+                    <li>• Need exclusive access</li>
+                    <li>• Block all readers and other writers</li>
+                    <li>• Should get priority to prevent starvation</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 border border-blue-500/30">
+                <h4 className="text-blue-400 font-semibold mb-2">
+                  🎬 What to Watch
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Notice how multiple{" "}
+                  <span className="text-blue-400">readers</span> can be active
+                  at once, but when a{" "}
+                  <span className="text-orange-400">writer</span> takes the
+                  lock, everyone else must wait!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Manual Controls */}
