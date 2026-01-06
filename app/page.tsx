@@ -309,7 +309,7 @@ export default function Home() {
           <div className="space-y-6">
             {/* Beginner */}
             <div className="flex items-center gap-4">
-              <div className="w-28 flex-shrink-0">
+              <div className="w-50 flex-shrink-0">
                 <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-400">
                   🌱 Beginner
                 </span>
@@ -331,7 +331,7 @@ export default function Home() {
 
             {/* Intermediate */}
             <div className="flex items-center gap-4">
-              <div className="w-28 flex-shrink-0">
+              <div className="w-50 flex-shrink-0">
                 <span className="px-3 py-1 rounded-full text-sm font-medium bg-yellow-500/20 text-yellow-400">
                   🌿 Intermediate
                 </span>
@@ -357,7 +357,7 @@ export default function Home() {
 
             {/* Advanced */}
             <div className="flex items-center gap-4">
-              <div className="w-28 flex-shrink-0">
+              <div className="w-50 flex-shrink-0">
                 <span className="px-3 py-1 rounded-full text-sm font-medium bg-red-500/20 text-red-400">
                   🔥 Advanced
                 </span>
